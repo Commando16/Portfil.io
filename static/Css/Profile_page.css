@@ -1,0 +1,42 @@
+body{
+	background-color: #F0F0F0;
+}
+
+.parents{
+ 	height: 500px; /* do remove the height once u fill component in this div */
+ 	background-color: lightblue;
+}
+
+.child{
+	height: 100%; /* do remove the height once u fill component in this div */
+	background-color: lightgreen;
+}
+
+.boxes{
+	background-color: white;
+	border-radius: 20px; 
+}
+
+.profileBox{
+	height: 20%; /* do remove the height once u fill component in this div */
+}
+
+.skillsBox{
+	height: 20%; /* do remove the height once u fill component in this div */	
+}
+
+.linkBox{
+	height: 20%; /* do remove the height once u fill component in this div */	
+}
+
+.linkedInBox{
+	height: 50px;
+	background-color: lightpink;
+}
+
+.navigatorBox{
+	height: 50px;
+	background-color: lightpink;
+	border: 1px solid grey;
+	border-radius: 10px;
+}
