@@ -3,6 +3,7 @@ import os
 import shutil
 from datetime import datetime
 from flask_sqlalchemy import SQLAlchemy
+from werkzeug.utils import secure_filename
 import requests
 
 
@@ -27,6 +28,7 @@ class About_data(db.Model):
     sno     = db.Column(db.Integer, primary_key=True, unique=True)
     user_id = db.Column(db.String(50), unique=True)
     text    = db.Column(db.Integer, primary_key=False)
+
 
 class Acadmic_data(db.Model):
     sno       = db.Column(db.Integer, primary_key=True, unique=True)
@@ -201,19 +203,45 @@ def LogoutFormHandler():
 @app.route('/ProfileFormHandler', methods=['POST'])
 def ProfileFormHandler():
     if request.method == 'POST':
-        profile_image = "some image"
-        profile_name = request.form['nameTextInp']
-        profile_mobile = request.form['mobileTextInp']
-        profile_email = request.form['emailTextInp']
-        profile_location = request.form['locationTextInp']
+        profile_image = request.files['profileImageInp']
+        profile_name = request.form['profilenameInp']
+        profile_mobile = request.form['profilemobileInp']
+        profile_email = request.form['profileemailInp']
+        profile_location = request.form['profilelocationInp']
 
         print("*************************")
         print(profile_image, profile_name, profile_mobile, profile_email, profile_location)
         print("*************************")
 
-        entry = About_data( user_id = session['id'], image = profile_image, name = profile_name, mobile = profile_mobile, email = profile_email, location = profile_location)
-        db.session.add(entry)
-        db.session.commit()
+        totalfetch = Totals.query.filter_by(name="profile_data").all()
+        currenttotal = totalfetch[0].total
+        newtotal = currenttotal + 1
+
+        finalfilename = str(newtotal)+'_'+secure_filename(profile_image.filename)
+        ActualUploaddirectory = os.path.join(app.config['UPLOAD_FOLDER'],"ProfilePhotoUploads")
+
+        if not os.path.exists( ActualUploaddirectory ):
+            os.makedirs( ActualUploaddirectory )
+
+        if finalfilename.split(".")[-1].lower() in ['jpg', 'jpeg', 'png']:
+            #Extension = finalfilename.split(".")[-1] 
+
+            finalpath = os.path.join( ActualUploaddirectory , finalfilename )
+
+            profile_image.save( finalpath )
+
+
+            Profile_data_entry = Profile_data( user_id = session['id'], image = finalpath, name = profile_name, mobile = profile_mobile, email = profile_email, location = profile_location)
+            db.session.add(Profile_data_entry)
+            db.session.commit()
+
+
+            Total_data_entry = Totals.query.filter_by(name="profile_data").first()
+            Total_data_entry.total = newtotal
+            db.session.commit()
+        
+        else:
+            return "file formate not allowed."
 
 
         return "profile form submitted"
@@ -232,9 +260,10 @@ def SkillFormHandler():
         print(skill_name)
         print("*************************")
 
-        entry = About_data( user_id = session['id'], skill_name = skill_name )
+        entry = Skill_data( user_id = session['id'], skill_name = skill_name )
         db.session.add(entry)
         db.session.commit()
+        
 
         return "skill form submitted"
            
@@ -247,13 +276,13 @@ def SkillFormHandler():
 def LinkFormHandler():
     if request.method == 'POST':
         link_name = request.form['linkLabelInp']
-        link_link = request.form['linkInp']
+        link_link = request.form['linkLinkInp']
 
         print("*************************")
         print(link_name, link_link)
         print("*************************")
 
-        entry = About_data( user_id = session['id'], name = link_name, link = link_links )
+        entry = Link_data( user_id = session['id'], name = link_name, link = link_link )
         db.session.add(entry)
         db.session.commit()
 
@@ -286,51 +315,153 @@ def AboutFormHandler():
             return redirect("/")    
     
 # Experience Form Handler
-@app.route('/EcperienceFormHandler', methods=['POST'])
+@app.route('/ExperienceFormHandler', methods=['POST'])
 def ExperienceFormHandler():
-    if request.method == 'POST':
-        experience_designation = request.form['designationTextInp']
-        experience_duration = request.form['dateTextInpFrom']+"-"+request.form['dateTextInpTo']
-        experience_organisation = request.form['companyTextInp']
-        experience_description = request.form['jobDescriptionTextInp']
-        
+    if not session.get("id") is None:
+        if request.method == 'POST':
+            experience_designation = request.form['experiencedesignationTextInp']
+            experience_duration = request.form['experiencedateTextInpFrom']+" - "+request.form['experiencedateTextInpTo']
+            experience_organisation = request.form['experiencecompanyTextInp']
+            experience_description = request.form['experiencejobDescriptionTextInp']
+
+            print("*************************")
+            print(experience_designation, experience_duration, experience_organisation, experience_description)
+            print("*************************")
+
+            entry = Experience_data( user_id = session['id'], designation = experience_designation , duration = experience_duration , organisation = experience_organisation , discription = experience_description)
+            db.session.add(entry)
+            db.session.commit()
+
+            return "experience form submitted"
+
+            
+        else:
+            return redirect("/")
     else:
-        return redirect("/")
-    
+            return redirect("/")
     
 # Acadmic Form Handler
 @app.route('/AcadmicFormHandler', methods=['POST'])
 def AcadmicFormHandler():
-    if request.method == 'POST':
-        acadmic_course = request.form['aboutMeTextInp']
-        acadmic_duration = request.form['aboutMeTextInp']
-        acadmic_institute = request.form['aboutMeTextInp']
-        
-    else:
-        return redirect("/")
+    if not session.get("id") is None:
+        if request.method == 'POST':
+            acadmic_course = request.form['acadmicqualificationTextInp']
+            acadmic_institute = request.form['acadmicinstituteTextInp']
+            acadmic_duration= request.form['acadmicdateTextInpFrom']+" - "+request.form['acadmicdateTextInpTo']
+            
 
+            print("*************************")
+            print(acadmic_course, acadmic_duration, acadmic_institute)
+            print("*************************")
+
+            entry = Acadmic_data( user_id = session['id'], course = acadmic_course, duration = acadmic_institute , institute = acadmic_duration )
+            db.session.add(entry)
+            db.session.commit()
+
+            return "acadmic form submitted"
+        else:
+            return redirect("/")
+
+    else:
+            return redirect("/")
 
 # Achievement Form Handler
 @app.route('/AchievementFormHandler', methods=['POST'])
 def AchievementFormHandler():
-    if request.method == 'POST':
-        achievement_image = request.form['aboutMeTextInp']
-        achievement_tag = request.form['aboutMeTextInp']
-        
+    if not session.get("id") is None:
+        if request.method == 'POST':
+            achievement_image = request.files['certificateImageFileInp']
+            achievement_tag   = request.form['certificateTextInp']
+
+
+            print("*************************")
+            print( achievement_image , achievement_tag )
+            print("*************************")
+            
+            totalfetch = Totals.query.filter_by(name="acadmic_data").all()
+            currenttotal = totalfetch[0].total
+            newtotal = currenttotal + 1
+
+
+            finalfilename = str(newtotal)+'_'+secure_filename(achievement_image.filename)
+            ActualUploaddirectory = os.path.join(app.config['UPLOAD_FOLDER'],"AchievementUploads")
+
+            if not os.path.exists( ActualUploaddirectory ):
+                os.makedirs( ActualUploaddirectory )
+
+            if finalfilename.split(".")[-1].lower() in ['jpg', 'jpeg', 'png']:
+                    #Extension = finalfilename.split(".")[-1] 
+
+                    finalpath = os.path.join( ActualUploaddirectory , finalfilename )
+
+                    achievement_image.save( finalpath )
+
+
+                    entry = Achievement_data( user_id = session['id'], image = finalpath , tag = achievement_tag )
+                    db.session.add(entry)
+                    db.session.commit()
+
+                    Total_data_entry = Totals.query.filter_by(name="acadmic_data").first()
+                    Total_data_entry.total = newtotal
+                    db.session.commit()
+
+            return "achievement form submitted"
+            
+        else:
+            return redirect("/")
+    
     else:
-        return redirect("/")
+            return redirect("/")
 
     
 # Project Form Handler
 @app.route('/ProjectFormHandler', methods=['POST'])
 def ProjectFormHandler():
-    if request.method == 'POST':
-        project_image = request.form['aboutMeTextInp']
-        project_description = request.form['aboutMeTextInp']
-        project_link = request.form['aboutMeTextInp']
-        
+    if not session.get("id") is None:
+        if request.method == 'POST':
+            project_name = request.form['projectNameTextInp']
+            project_image = request.files['projectImageFileInp']
+            project_description = request.form['projectDescriptionTextInp']
+            project_link = request.form['projectLinkTextInp']
+
+            print("*************************")
+            print( project_name, project_image, project_description, project_link )
+            print("*************************")
+
+            totalfetch = Totals.query.filter_by(name="project_data").all()
+            currenttotal = totalfetch[0].total
+            newtotal = currenttotal + 1
+
+            finalfilename = str(newtotal)+'_'+secure_filename(project_image.filename)
+            ActualUploaddirectory = os.path.join(app.config['UPLOAD_FOLDER'],"ProjectUploads")
+
+            if not os.path.exists( ActualUploaddirectory ):
+                os.makedirs( ActualUploaddirectory )
+
+            if finalfilename.split(".")[-1].lower() in ['jpg', 'jpeg', 'png']:
+                #Extension = finalfilename.split(".")[-1] 
+
+                finalpath = os.path.join( ActualUploaddirectory , finalfilename )
+
+                project_image.save( finalpath )
+
+
+                Project_data_entry = Project_data( user_id = session['id'], image = finalpath , description = project_description, link = project_link)
+                db.session.add(Project_data_entry)
+                db.session.commit()
+
+                Total_data_entry = Totals.query.filter_by(name="project_data").first()
+                Total_data_entry.total = newtotal
+                db.session.commit()
+
+            
+
+            return "project form submitted"
+            
+        else:
+            return redirect("/")
     else:
-        return redirect("/")
+            return redirect("/")
 
 
 
