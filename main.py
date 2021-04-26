@@ -32,22 +32,22 @@ class About_data(db.Model):
 
 class Acadmic_data(db.Model):
     sno       = db.Column(db.Integer, primary_key=True, unique=True)
-    user_id   = db.Column(db.String(50), unique=True)
+    user_id   = db.Column(db.String(50), unique=False)
     course    = db.Column(db.String(50), primary_key=False)
     duration  = db.Column(db.String(25), primary_key=False)
     institute = db.Column(db.String(100), primary_key=False)
 
 
-class Achievement_data(db.Model):
-    sno     = db.Column(db.Integer, primary_key=True, unique=True)
-    user_id = db.Column(db.String(50), unique=True)
-    image   = db.Column(db.String(), primary_key=False)
-    tag     = db.Column(db.String(30), primary_key=False)
+# class Achievement_data(db.Model):
+#     sno     = db.Column(db.Integer, primary_key=True, unique=True)
+#     user_id = db.Column(db.String(50), unique=False)
+#     image   = db.Column(db.String(), primary_key=False)
+#     tag     = db.Column(db.String(30), primary_key=False)
 
 
 class Experience_data(db.Model):
     sno          = db.Column(db.Integer, primary_key=True, unique=True)
-    user_id      = db.Column(db.String(50), unique=True)
+    user_id      = db.Column(db.String(50), unique=False)
     designation  = db.Column(db.String(50), primary_key=False)
     duration     = db.Column(db.String(25), primary_key=False)
     organisation = db.Column(db.String(), primary_key=False)
@@ -56,7 +56,7 @@ class Experience_data(db.Model):
 
 class Link_data(db.Model):
     sno     = db.Column(db.Integer, primary_key=True, unique=True)
-    user_id = db.Column(db.String(50), unique=True)
+    user_id = db.Column(db.String(50), unique=False)
     name    = db.Column(db.String(50), unique=True)
     link    = db.Column(db.String, primary_key=False)
 
@@ -73,7 +73,7 @@ class Profile_data(db.Model):
 
 class Project_data(db.Model):
     sno          = db.Column(db.Integer, primary_key=True, unique=True)
-    user_id      = db.Column(db.String(50), unique=True)
+    user_id      = db.Column(db.String(50), unique=False)
     image        = db.Column(db.String(), primary_key=False)
     description  = db.Column(db.String(), primary_key=False)
     link         = db.Column(db.String(), primary_key=False)
@@ -81,7 +81,7 @@ class Project_data(db.Model):
 
 class Skill_data(db.Model):
     sno         = db.Column(db.Integer, primary_key=True, unique=True)
-    user_id     = db.Column(db.String(50), unique=True)
+    user_id     = db.Column(db.String(50), unique=False)
     skill_name  = db.Column(db.String(50), primary_key=False)
 
 
@@ -91,6 +91,11 @@ class Totals(db.Model):
     total = db.Column(db.Integer, primary_key=False)
 
 
+class Certificate_data(db.Model):
+    sno      = db.Column(db.Integer, primary_key=True, unique=True)
+    user_id  = db.Column(db.String(50), unique=False)
+    tag_name = db.Column(db.String(50), primary_key=False)
+    image    = db.Column(db.String(50), primary_key=False)
 
 
 
@@ -154,10 +159,43 @@ def UploadPannel():
         return redirect("/")
 
 # Profile pagae route
-@app.route('/Profile/<user_id>', methods=['GET'])
-def Profile(user_id):
+@app.route('/Profile/<U_id>', methods=['GET'])
+def Profile(U_id):
+
+    #print(type(U_id))
+    
     if request.method == 'GET':
-        return user_id
+
+        profile_data_db  = Profile_data.query.filter_by( user_id = U_id ).first()
+        skill_data_db    = Skill_data.query.filter_by( user_id = U_id ).all()
+        link_data        = Link_data.query.filter_by( user_id = U_id ).all()
+        aboutme_data     = About_data.query.filter_by( user_id = U_id ).first()
+        experience_data  = Experience_data.query.filter_by( user_id = U_id ).all()
+        acadmic_data     = Acadmic_data.query.filter_by( user_id = U_id ).all()
+        #achievement_data = Achievement_data.filter( user_id = U_id ).all()
+        certificate_data = Certificate_data.query.filter_by( user_id = U_id ).all()
+        project_data     = Project_data.query.filter_by( user_id = U_id ).all()
+
+        # print("***********************")
+        # print(certificate_data)
+        # print(certificate_data[0].sno)
+        # print(certificate_data[0].user_id)
+        # print(certificate_data[0].image)
+        # print(certificate_data[0].tag_name)
+        # print(profile_data_db.email)
+        # print(profile_data_db.location)
+        # print("***********************")
+
+        return render_template("ProfilePage.html", 
+        profile      = profile_data_db , 
+        skill        = skill_data_db, 
+        link         = link_data,
+        aboutme      = aboutme_data,
+        experience   = experience_data ,
+        acadmic      = acadmic_data,  
+        certificate  = certificate_data,
+        project      = project_data
+        )
     else:
         # return sorry
         pass
@@ -314,6 +352,7 @@ def AboutFormHandler():
     else:
             return redirect("/")    
     
+
 # Experience Form Handler
 @app.route('/ExperienceFormHandler', methods=['POST'])
 def ExperienceFormHandler():
@@ -340,6 +379,7 @@ def ExperienceFormHandler():
     else:
             return redirect("/")
     
+
 # Acadmic Form Handler
 @app.route('/AcadmicFormHandler', methods=['POST'])
 def AcadmicFormHandler():
@@ -364,6 +404,7 @@ def AcadmicFormHandler():
 
     else:
             return redirect("/")
+
 
 # Achievement Form Handler
 @app.route('/AchievementFormHandler', methods=['POST'])
@@ -397,7 +438,7 @@ def AchievementFormHandler():
                     achievement_image.save( finalpath )
 
 
-                    entry = Achievement_data( user_id = session['id'], image = finalpath , tag = achievement_tag )
+                    entry = Certificate_data( user_id = session['id'], image = finalpath , tag_name = achievement_tag )
                     db.session.add(entry)
                     db.session.commit()
 
