@@ -158,10 +158,10 @@
             <h5>Profile Panel </h5>
             <form class="pannelForms p-3" action="/ProfileFormHandler" method="POST" enctype="multipart/form-data">
               <div class="form-group row">
-                <label for="profileImageFile" class="col-sm-2 col-form-label">Image File</label>
+                <label for="profileImageInp" class="col-sm-2 col-form-label">Image File</label>
                 <div class="custom-file col-sm-9">
-                  <input type="file" class="form-control custom-file-input" id="profileImageFile"
-                    name="profileImageFileInp">
+                  <input type="file" class="form-control custom-file-input" id="profileImageInp"
+                    name="profileImageInp">
                   <label class="custom-file-label" for="profileImageFile">Choose file</label>
                 </div>
                 <small id="profileImageFileHelp" class="form-text text-muted col-sm-9 pt-2">
@@ -170,33 +170,33 @@
               </div>
 
               <div class="form-group row">
-                <label for="nameText" class="col-sm-2 col-form-label">Name</label>
+                <label for="profilename" class="col-sm-2 col-form-label">Name</label>
                 <div class="col-sm-9 p-0">
-                  <input type="text" class="form-control" id="nameText" name="nameTextInp"
+                  <input type="text" class="form-control" id="profilename" name="profilenameInp"
                     placeholder="Enter your Name">
                 </div>
               </div>
 
               <div class="form-group row">
-                <label for="mobileText" class="col-sm-2 col-form-label">Mobile</label>
+                <label for="profilemobile" class="col-sm-2 col-form-label">Mobile</label>
                 <div class="col-sm-9 p-0">
-                  <input type="text" class="form-control" id="mobileText" name="mobileTextInp"
+                  <input type="text" class="form-control" id="profilemobile" name="profilemobileInp"
                     placeholder="Enter your Contact number">
                 </div>
               </div>
 
               <div class="form-group row">
-                <label for="emailText" class="col-sm-2 col-form-label">Email</label>
+                <label for="profileemail" class="col-sm-2 col-form-label">Email</label>
                 <div class="col-sm-9 p-0">
-                  <input type="email" class="form-control" id="emailText" name="emailTextInp"
+                  <input type="email" class="form-control" id="profileemail" name="profileemailInp"
                     placeholder="Enter your e-mail">
                 </div>
               </div>
 
               <div class="form-group row">
-                <label for="locationText" class="col-sm-2 col-form-label">Location</label>
+                <label for="profilelocation" class="col-sm-2 col-form-label">Location</label>
                 <div class="col-sm-9 p-0">
-                  <input type="text" class="form-control" id="locationText" name="locationTextInp"
+                  <input type="text" class="form-control" id="profilelocation" name="profilelocationInp"
                     placeholder="Enter your Location">
                 </div>
               </div>
@@ -217,7 +217,7 @@
               <div class="form-group row">
                 <label for="skillsText" class="col-sm-2 col-form-label">Skill</label>
                 <div class="col-sm-9 p-0">
-                  <input type="text" class="form-control" id="skillsText" name="skillsTextInp"
+                  <input type="text" class="form-control" id="skillsTextInp" name="skillsTextInp"
                     placeholder="Enter your skills">
                 </div>
               </div>
@@ -236,19 +236,19 @@
             <h5>Link me Panel </h5>
             <form class="pannelForms p-3" action="/LinkFormHandler" method="POST">
               <div class="form-group row">
-                <label for="aboutMeText" class="col-sm-2 col-form-label">Link Label</label>
+                <label for="linkLabel" class="col-sm-2 col-form-label">Link Label</label>
                 <div class="col-sm-9 p-0">
                   <input type="text" class="form-control" id="linkLabel" name="linkLabelInp">
                 </div>                
               </div>
               <div class="form-group row">
-                <label for="aboutMeText" class="col-sm-2 col-form-label">Link</label>
+                <label for="linkLinkInp" class="col-sm-2 col-form-label">Link</label>
                 <div class="col-sm-9 p-0">
-                  <input type="text" class="form-control" id="link" name="linkInp">
+                  <input type="text" class="form-control" id="linkLinkInp" name="linkLinkInp">
                 </div>   
               </div>
 
-              <button type="Submit" class="btn btn-success" id="aboutMeBtn"> <b>Submit</b> </button>
+              <button type="Submit" class="btn btn-success" id="linkBtn"> <b>Submit</b> </button>
             </form>
           </div>
           <!-- About me Ends -->
@@ -278,19 +278,17 @@
 
           
           <br><br><br>
-
-
          
 
           <!-- 5 Experience form -->
           <div id="experienceBox">
             <h5>Experience Panel </h5>
-            <form class="pannelForms p-3" action="#" method="POST">
+            <form class="pannelForms p-3" action="/ExperienceFormHandler" method="POST">
 
               <div class="form-group row">
                 <label for="designationText" class="col-sm-2 col-form-label">Designation</label>
                 <div class="col-sm-9 p-0">
-                  <input type="text" class="form-control" id="designationText" name="designationTextInp"
+                  <input type="text" class="form-control" id="experiencedesignationText" name="experiencedesignationTextInp"
                     placeholder="Enter your designation">
                 </div>
               </div>
@@ -298,23 +296,23 @@
               <div class="form-group row">
                 <label for="companyText" class="col-sm-2 col-form-label">Company</label>
                 <div class="col-sm-9 p-0">
-                  <input type="text" class="form-control" id="companyText" name="companyTextInp"
+                  <input type="text" class="form-control" id="experiencecompanyText" name="experiencecompanyTextInp"
                     placeholder="Enter your company">
                 </div>
               </div>
 
               <div class="form-group row">
-                <label for="date" class="col-sm-2 col-form-label">Date</label>
-                <div class="col-sm-9 p-0">
-                  <input type="date" class="date-control-1" id="dateText" name="dateTextInpFrom" min="1970-01-02">
-                  <input type="date" class="date-control-2 mx-4" id="dateText" name="dateTextInpTo" min="1970-01-02">
+                <label for="experiencedate" class="col-sm-2 col-form-label">Date</label>
+                <div class="col-sm-9 p-0" id="experiencedate">
+                  <input type="date" class="date-control-1" id="dateText" name="experiencedateTextInpFrom" min="1970-01-02">
+                  <input type="date" class="date-control-2 mx-4" id="dateText" name="experiencedateTextInpTo" min="1970-01-02">
                 </div>
               </div>
 
               <div class="form-group row">
-                <label for="jobDescriptionText" class="col-sm-2 col-form-label">Job Description</label>
+                <label for="experiencejobDescriptionText" class="col-sm-2 col-form-label">Job Description</label>
                 <div class="col-sm-9 p-0">
-                  <input type="text" class="form-control" id="jobDescriptionText" name="jobDescriptionTextInp"
+                  <input type="text" class="form-control" id="experiencejobDescriptionText" name="experiencejobDescriptionTextInp"
                     placeholder="Enter your Job Description">
                 </div>
                 <small id="jobDescriptionTextHelp" class="form-text text-muted col-sm-9 pt-2">
@@ -322,7 +320,7 @@
                 </small>
               </div>
 
-              <button type="Submit" class="btn btn-success" id="aboutMeBtn"> <b>Submit</b> </button>
+              <button type="Submit" class="btn btn-success" id="experienceBtn"> <b>Submit</b> </button>
             </form>
           </div>
           <!-- Experience Ends -->
@@ -334,29 +332,29 @@
           <!-- 6 Acadmics form -->
           <div id="acadmicsBox">
             <h5>Acadmics Panel</h5>
-            <form class="pannelForms p-3" action="#" method="POST">
+            <form class="pannelForms p-3" action="/AcadmicFormHandler" method="POST">
               <div class="form-group row">
-                <label for="qualificationText" class="col-sm-2 col-form-label">Qualification</label>
+                <label for="acadmicqualificationText" class="col-sm-2 col-form-label">Qualification</label>
                 <div class="col-sm-9 p-0">
-                  <input type="text" class="form-control" id="qualificationText" name="qualificationTextInp">
+                  <input type="text" class="form-control" id="acadmicqualificationText" name="acadmicqualificationTextInp">
                 </div>
               </div>
 
               <div class="form-group row">
-                <label for="instituteText" class="col-sm-2 col-form-label">Institute</label>
+                <label for="acadmicinstituteText" class="col-sm-2 col-form-label">Institute</label>
                 <div class="col-sm-9 p-0">
-                  <input type="text" class="form-control" id="instituteText" name="instituteTextInp">
+                  <input type="text" class="form-control" id="acadmicinstituteText" name="acadmicinstituteTextInp">
                 </div>
               </div>
 
               <div class="form-group row">
                 <label for="date" class="col-sm-2 col-form-label">Year</label>
-                <div class="col-sm-9 p-0">
-                  <input type="date" class="date-control-1" id="dateText" name="dateTextInp" min="1970-01-02">
-                  <input type="date" class="date-control-2 mx-4" id="dateText" name="dateTextInp" min="1970-01-02">
+                <div class="col-sm-9 p-0" id="acadmicdate">
+                  <input type="date" class="date-control-1" id="dateText" name="acadmicdateTextInpFrom" min="1970-01-02">
+                  <input type="date" class="date-control-2 mx-4" id="dateText" name="acadmicdateTextInpTo" min="1970-01-02">
                 </div>
               </div>
-              <button type="Submit" class="btn btn-success" id="aboutMeBtn"> <b>Submit</b> </button>
+              <button type="Submit" class="btn btn-success" id="acadmicBtn"> <b>Submit</b> </button>
             </form>
           </div>
           <!-- Acadmics Ends -->
@@ -368,7 +366,7 @@
           <!-- 7 Certificate form -->
           <div id="certificateBox">
             <h5>Certificate Panel </h5>
-            <form class="pannelForms p-3" action="#" method="POST" enctype="multipart/form-data">
+            <form class="pannelForms p-3" action="/AchievementFormHandler" method="POST" enctype="multipart/form-data">
               <div class="form-group row">
                 <label for="certificateText" class="col-sm-2 col-form-label">Name of Certificate</label>
                 <div class="col-sm-9 p-0">
@@ -389,7 +387,7 @@
                 </small>
               </div>
 
-              <button type="Submit" class="btn btn-success" id="aboutMeBtn"> <b>Submit</b> </button>
+              <button type="Submit" class="btn btn-success" id="certificateBtn"> <b>Submit</b> </button>
             </form>
           </div>
           <!-- Certificate Ends -->
@@ -401,7 +399,7 @@
           <!-- 8 Project form -->
           <div id="projectBox">
             <h5>Project Panel</h5>
-            <form class="pannelForms p-3" action="#" method="POST" enctype="multipart/form-data">
+            <form class="pannelForms p-3" action="/ProjectFormHandler" method="POST" enctype="multipart/form-data">
 
               <div class="form-group row">
                 <label for="projectNameText" class="col-sm-2 col-form-label">Project Name</label>
@@ -423,7 +421,6 @@
                 </small>
               </div>
 
-
               <div class="form-group row">
                 <label for="projectDescriptionText" class="col-sm-2 col-form-label">Project Description</label>
                 <div class="col-sm-9 p-0">
@@ -431,6 +428,15 @@
                     placeholder="Describe your Project">
                 </div>
               </div>
+
+              <div class="form-group row">
+                <label for="projectLinkText" class="col-sm-2 col-form-label">Project Link</label>
+                <div class="col-sm-9 p-0">
+                  <input type="text" class="form-control" id="projectLinkText" name="projectLinkTextInp"
+                    placeholder="Enter your Name">
+                </div>
+              </div>
+
               <button type="Submit" class="btn btn-success" id="aboutMeBtn" value="Submit"> <b>Submit</b> </button>
             </form>
           </div>
